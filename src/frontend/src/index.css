@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+    /* Warm cream background #f5f1eb */
+    --background: 0.962 0.012 85;
+    --foreground: 0.25 0.06 50;
+    /* White card */
+    --card: 1 0 0;
+    --card-foreground: 0.25 0.06 50;
+    --popover: 1 0 0;
+    --popover-foreground: 0.25 0.06 50;
+    /* Dark brown primary #6b4423 */
+    --primary: 0.42 0.09 50;
+    --primary-foreground: 0.97 0.01 85;
+    /* Secondary brown #8b5a2b */
+    --secondary: 0.5 0.09 52;
+    --secondary-foreground: 0.97 0.01 85;
+    /* Muted */
+    --muted: 0.93 0.015 80;
+    --muted-foreground: 0.55 0.04 55;
+    /* Sage green accent #c8d5b9 */
+    --accent: 0.84 0.04 130;
+    --accent-foreground: 0.3 0.06 50;
+    /* Borders #d4c4b0 */
+    --border: 0.8 0.025 75;
+    --input: 0.8 0.025 75;
+    --ring: 0.42 0.09 50;
+    --destructive: 0.55 0.18 25;
+    --destructive-foreground: 1 0 0;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Lora", Georgia, serif;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Playfair Display", Georgia, serif;
+  }
+}
