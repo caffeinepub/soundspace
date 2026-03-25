@@ -31,7 +31,7 @@ import {
   useParams,
   useSearch,
 } from "@tanstack/react-router";
-import { Music, Search, ShoppingCart } from "lucide-react";
+import { Menu, Music, Search, ShoppingCart, X } from "lucide-react";
 import {
   ArrowLeft,
   CheckCircle,
@@ -159,7 +159,7 @@ function ProductCard({
       >
         <img
           src={product.image}
-          alt={product.name}
+          alt={`${product.name} - ${product.category} instrument available at SoundSpace`}
           className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
         />
       </button>
@@ -171,13 +171,13 @@ function ProductCard({
           >
             {product.category}
           </Badge>
-          <Badge className="text-xs font-ui bg-blue-100 text-blue-700 border-blue-200 hover:bg-blue-100">
+          <Badge variant="outline" className="text-xs font-ui">
             AI
           </Badge>
-          <Badge className="text-xs font-ui bg-green-100 text-green-700 border-green-200 hover:bg-green-100">
-            Netaji
+          <Badge variant="outline" className="text-xs font-ui">
+            meta
           </Badge>
-          <Badge className="text-xs font-ui bg-orange-100 text-orange-700 border-orange-200 hover:bg-orange-100">
+          <Badge variant="outline" className="text-xs font-ui">
             tagine
           </Badge>
         </div>
@@ -221,47 +221,80 @@ function ProductCard({
 
 // ---- Header ----
 function Header({ cartCount }: { cartCount: number }) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const navLinks = [
+    { to: "/store", label: "Store" },
+    { to: "/blog", label: "Blog" },
+    { to: "/about", label: "About Us" },
+    { to: "/contact", label: "Contact" },
+  ];
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-brown-light shadow-sm">
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2" data-ocid="nav.link">
           <Music className="w-6 h-6 text-brown-dark" />
-          <span className="font-serif text-xl font-bold text-brown-dark">
-            SoundSpace
-          </span>
+          <div className="flex flex-col leading-tight">
+            <span className="font-serif text-xl font-bold text-brown-dark">
+              SoundSpace
+            </span>
+            <span className="font-ui text-[10px] text-brown-medium tracking-widest uppercase hidden sm:block">
+              Find Your Sound
+            </span>
+          </div>
         </Link>
         <nav className="hidden md:flex items-center gap-6 font-ui">
-          {[
-            { to: "/", label: "Home" },
-            { to: "/store", label: "Store" },
-            { to: "/blog", label: "Blog" },
-            { to: "/about", label: "About" },
-            { to: "/contact", label: "Contact" },
-          ].map((link) => (
+          {navLinks.map((link) => (
             <Link
               key={link.to}
               to={link.to}
-              data-ocid={`nav.${link.label.toLowerCase()}.link`}
               className="text-sm font-semibold transition-colors hover:text-brown-dark text-brown-medium"
               activeProps={{
                 className:
                   "text-brown-dark border-b-2 border-brown-dark pb-0.5",
               }}
-              activeOptions={{ exact: link.to === "/" }}
+              activeOptions={{ exact: false }}
             >
               {link.label}
             </Link>
           ))}
         </nav>
-        <Link to="/cart" className="relative p-2" data-ocid="cart.link">
-          <ShoppingCart className="w-6 h-6 text-brown-dark" />
-          {cartCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-brown-dark text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-ui font-semibold">
-              {cartCount}
-            </span>
-          )}
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link to="/cart" className="relative p-2" data-ocid="cart.link">
+            <ShoppingCart className="w-6 h-6 text-brown-dark" />
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-brown-dark text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-ui font-semibold">
+                {cartCount}
+              </span>
+            )}
+          </Link>
+          <button
+            type="button"
+            className="md:hidden p-2 text-brown-dark"
+            onClick={() => setMobileOpen((v) => !v)}
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
+          </button>
+        </div>
       </div>
+      {mobileOpen && (
+        <nav className="md:hidden bg-white border-t border-brown-light px-4 pb-4 flex flex-col gap-1 font-ui">
+          {navLinks.map((link) => (
+            <Link
+              key={link.to}
+              to={link.to}
+              className="py-2 text-sm font-semibold text-brown-medium hover:text-brown-dark border-b border-brown-light/50 last:border-0"
+              onClick={() => setMobileOpen(false)}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+      )}
     </header>
   );
 }
@@ -507,56 +540,6 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-4 py-16">
-        <h2 className="font-serif text-4xl font-bold text-brown-dark mb-8 text-center">
-          Latest from the Blog
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {blogPosts.slice(0, 3).map((post, i) => (
-            <motion.div
-              key={post.id}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
-            >
-              <Link
-                to="/blog/$id"
-                params={{ id: String(post.id) }}
-                className="block bg-white rounded-lg border border-brown-light overflow-hidden hover:shadow-md transition-shadow"
-              >
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-4">
-                  <span className="text-xs font-ui font-semibold text-brown-medium uppercase tracking-wide">
-                    {post.category}
-                  </span>
-                  <h3 className="font-serif text-base font-semibold text-brown-dark mt-1 mb-2 leading-snug line-clamp-2">
-                    {post.title}
-                  </h3>
-                  <p className="text-xs text-muted-foreground font-body line-clamp-2">
-                    {post.excerpt}
-                  </p>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </div>
-        <div className="text-center mt-8">
-          <Button
-            variant="outline"
-            className="border-brown-dark text-brown-dark hover:bg-brown-dark hover:text-white font-ui font-semibold px-8"
-            onClick={() => navigate({ to: "/blog" })}
-            data-ocid="blog.view_all.button"
-          >
-            View All Posts
-          </Button>
-        </div>
-      </section>
-
       <section className="bg-sage/30 py-16 px-4 border-y border-brown-light">
         <div className="max-w-6xl mx-auto">
           <h2 className="font-serif text-4xl font-bold text-brown-dark mb-8 text-center">
@@ -767,11 +750,19 @@ function ProductDetailPage() {
         <div>
           <img
             src={product.image}
-            alt={product.name}
+            alt={`${product.name} - detailed view of ${product.category} instrument`}
             className="w-full rounded-lg border border-brown-light object-cover aspect-[4/3]"
           />
           <p className="text-xs text-muted-foreground font-ui mt-2 break-all">
-            <span className="font-semibold">Image URL:</span> {product.image}
+            <span className="font-semibold">Image URL:</span>{" "}
+            <a
+              href={product.image}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline hover:text-blue-800 break-all"
+            >
+              {product.image}
+            </a>
           </p>
         </div>
         <div>
@@ -785,13 +776,13 @@ function ProductDetailPage() {
             {product.name}
           </h1>
           <div className="flex gap-2 mb-4 flex-wrap">
-            <Badge className="text-xs font-ui bg-blue-100 text-blue-700 border-blue-200 hover:bg-blue-100">
+            <Badge variant="outline" className="text-xs font-ui">
               AI
             </Badge>
-            <Badge className="text-xs font-ui bg-green-100 text-green-700 border-green-200 hover:bg-green-100">
-              Netaji
+            <Badge variant="outline" className="text-xs font-ui">
+              meta
             </Badge>
-            <Badge className="text-xs font-ui bg-orange-100 text-orange-700 border-orange-200 hover:bg-orange-100">
+            <Badge variant="outline" className="text-xs font-ui">
               tagine
             </Badge>
           </div>
@@ -846,41 +837,21 @@ function ProductDetailPage() {
 }
 
 // ---- About Page ----
-const values = [
+const teamMembers = [
   {
-    title: "Quality",
-    desc: "We partner only with trusted brands known for exceptional craftsmanship and durability.",
+    role: "Content Creators & Marketing Strategists",
+    names: "Vedant Garg & Devarsh Binani",
+    desc: 'Vedant and Devarsh are the voices behind our stories. Their job was to move beyond "sales talk" and create interesting, original content that musicians actually want to read. From deep-dive blog posts to smart digital strategies that help you find exactly what you\'re looking for online, they ensure that our brand stands out with clarity and authenticity.',
   },
   {
-    title: "Expertise",
-    desc: "Our team of passionate musicians brings decades of combined experience.",
+    role: "Web Editor & Project Manager",
+    names: "Ridhima Sharma",
+    desc: 'Ridhima is the engine that keeps this project moving. She managed the entire build of our digital storefront, ensuring every page is clean, intuitive, and works perfectly on any device. As Project Manager, she made sure every technical detail was polished and that we hit our deadlines without losing the "human touch" that defines our brand.',
   },
   {
-    title: "Community",
-    desc: "We're more than a store — we're a hub for the musical community.",
-  },
-];
-
-const team = [
-  {
-    name: "Vedant Garg",
-    role: "Founder & CEO",
-    bio: "Guitarist and entrepreneur with 15 years in the music industry.",
-  },
-  {
-    name: "Priya Nair",
-    role: "Head of Procurement",
-    bio: "Expert in sourcing world-class instruments from top manufacturers.",
-  },
-  {
-    name: "Arjun Mehta",
-    role: "Music Educator",
-    bio: "Classically trained pianist and dedicated music education advocate.",
-  },
-  {
-    name: "Ridhima Sharma",
-    role: "Customer Experience Lead",
-    bio: "Passionate violinist committed to helping every musician succeed.",
+    role: "Design Specialist",
+    names: "Sanjana Chauhan",
+    desc: "Sanjana's responsibility was to bring the instruments to life visually. She curated the high-quality photos and videos that capture the resonance and detail of our collection. By choosing the right colors and layouts, she's ensured that exploring our site feels just as exciting as walking into your favorite local music shop.",
   },
 ];
 
@@ -897,83 +868,55 @@ function AboutPage() {
             About SoundSpace
           </h1>
           <p className="font-body text-lg text-brown-medium max-w-2xl mx-auto">
-            We are a passionate team of musicians dedicated to bringing the best
-            instruments to players across India.
+            We are a passionate team of musicians and enthusiasts dedicated to
+            bringing the best instruments to players everywhere.
           </p>
         </motion.div>
       </section>
-      <section className="max-w-6xl mx-auto px-4 py-16">
+      <section className="max-w-4xl mx-auto px-4 py-16">
         <div className="bg-white rounded-lg border border-brown-light p-8 md:p-12">
-          <h2 className="font-serif text-3xl font-bold text-brown-dark mb-4">
-            Our Mission
-          </h2>
           <p className="font-body text-muted-foreground leading-relaxed mb-4">
-            At SoundSpace, our mission is simple: to make quality musical
-            instruments accessible to every aspiring musician in India. We
-            believe that the right instrument has the power to transform a
-            beginner into a lifelong musician.
+            At SoundSpace, we believe that every musician deserves an instrument
+            that feels like an extension of themselves. Whether you are picking
+            up your very first guitar or hunting for a professional-grade sitar,
+            we are here to bridge the gap between &quot;just playing&quot; and
+            truly finding your sound. Our mission is simple: to combine the
+            timeless craft of instrument making with a modern, digital shopping
+            experience that actually makes sense.
           </p>
           <p className="font-body text-muted-foreground leading-relaxed">
-            Founded in 2020, we have grown from a small online store to one of
-            India's most trusted musical instrument retailers. We carefully
-            curate our selection, working directly with top manufacturers to
-            bring you authentic, quality-assured instruments at competitive
-            prices.
+            This platform was built from the ground up by a team of enthusiasts
+            who are just as passionate about gear as you are:
           </p>
         </div>
       </section>
       <section className="bg-cream py-16 px-4 border-y border-brown-light">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <h2 className="font-serif text-3xl font-bold text-brown-dark mb-8 text-center">
-            Our Values
+            Meet the Team
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {values.map((v, i) => (
+          <div className="flex flex-col gap-6">
+            {teamMembers.map((member, i) => (
               <motion.div
-                key={v.title}
+                key={member.names}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
                 className="bg-white rounded-lg p-6 border border-brown-light"
               >
-                <h3 className="font-serif text-xl font-bold text-brown-dark mb-2">
-                  {v.title}
+                <p className="font-ui text-xs text-brown-medium uppercase tracking-wider mb-1">
+                  {member.role}
+                </p>
+                <h3 className="font-serif text-xl font-bold text-brown-dark mb-3">
+                  {member.names}
                 </h3>
                 <p className="font-body text-sm text-muted-foreground leading-relaxed">
-                  {v.desc}
+                  {member.desc}
                 </p>
               </motion.div>
             ))}
           </div>
-        </div>
-      </section>
-      <section className="max-w-6xl mx-auto px-4 py-16">
-        <h2 className="font-serif text-3xl font-bold text-brown-dark mb-8 text-center">
-          Meet the Team
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {team.map((member) => (
-            <div
-              key={member.name}
-              className="bg-white rounded-lg border border-brown-light p-6 text-center"
-            >
-              <div className="w-16 h-16 bg-sage rounded-full mx-auto mb-3 flex items-center justify-center">
-                <span className="font-serif text-2xl font-bold text-brown-dark">
-                  {member.name[0]}
-                </span>
-              </div>
-              <h3 className="font-serif text-base font-bold text-brown-dark">
-                {member.name}
-              </h3>
-              <p className="font-ui text-xs text-brown-medium mb-2">
-                {member.role}
-              </p>
-              <p className="font-body text-xs text-muted-foreground">
-                {member.bio}
-              </p>
-            </div>
-          ))}
         </div>
       </section>
     </main>
@@ -983,58 +926,250 @@ function AboutPage() {
 // ---- Blog Page ----
 function BlogPage() {
   return (
-    <main className="max-w-6xl mx-auto px-4 py-12">
-      <h1 className="font-serif text-4xl font-bold text-brown-dark mb-2">
-        The SoundSpace Blog
-      </h1>
-      <p className="font-body text-muted-foreground mb-10">
-        Insights, guides, and stories for music lovers
-      </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {blogPosts.map((post, i) => (
-          <motion.div
-            key={post.id}
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: i * 0.07 }}
-          >
-            <Link
-              to="/blog/$id"
-              params={{ id: String(post.id) }}
-              className="block bg-white rounded-lg border border-brown-light overflow-hidden hover:shadow-md transition-shadow"
-              data-ocid={`blog.item.${i + 1}`}
-            >
-              <img
-                src={post.image}
-                alt={post.title}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-5">
-                <span className="text-xs font-ui font-semibold text-brown-medium uppercase tracking-wide">
-                  {post.category}
-                </span>
-                <h2 className="font-serif text-lg font-bold text-brown-dark mt-1 mb-2 leading-snug line-clamp-2">
-                  {post.title}
-                </h2>
-                <p className="text-sm font-body text-muted-foreground line-clamp-3 mb-3">
-                  {post.excerpt}
-                </p>
-                <div className="flex items-center justify-between text-xs font-ui text-muted-foreground">
-                  <span>{post.author}</span>
-                  <span>
-                    {new Date(post.date).toLocaleDateString("en-IN", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </span>
-                </div>
-              </div>
-            </Link>
-          </motion.div>
-        ))}
-      </div>
+    <main className="max-w-3xl mx-auto px-4 py-12" data-ocid="blog.page">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <img
+          src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=800&q=80"
+          alt="A collection of musical instruments including guitars, violins and more representing the music industry"
+          className="w-full rounded-xl object-cover max-h-80 mb-8 border border-brown-light"
+        />
+        <span className="text-xs font-ui font-semibold text-brown-medium uppercase tracking-widest">
+          Industry Insights
+        </span>
+        <h1 className="font-serif text-4xl font-bold text-brown-dark mt-2 mb-2 leading-tight">
+          The Digital Pulse of Music
+        </h1>
+        <h2 className="font-serif text-xl text-brown-medium font-normal mb-6 leading-snug">
+          Navigating the Musical Instrument Industry in a Click-First World
+        </h2>
+        <div className="flex items-center gap-3 text-sm font-ui text-muted-foreground mb-10 pb-6 border-b border-brown-light">
+          <span>SoundSpace Editorial</span>
+          <span>·</span>
+          <span>25 March 2026</span>
+          <span>·</span>
+          <span>12 min read</span>
+        </div>
+
+        <div className="prose prose-stone max-w-none font-body text-[1.05rem] leading-relaxed text-stone-700 space-y-6">
+          <h2 className="font-serif text-2xl font-bold text-brown-dark mt-10 mb-3">
+            Introduction
+          </h2>
+          <p>
+            There is something almost sacred about the relationship between a
+            musician and their instrument. Whether it&apos;s the worn-in
+            fretboard of a vintage Stratocaster or the pristine, heavy ivory of
+            a grand piano, music has always been a tactile, physical experience.
+            For decades, the &quot;local music shop&quot; was the heart of this
+            world.
+          </p>
+          <p>
+            But let&apos;s be real: the world has shifted. The way we discover,
+            research, and eventually buy these tools of expression has moved
+            from the physical storefront to the digital screen. Today, a kid in
+            a rural village can watch a world-class jazz drummer demo a snare
+            drum on YouTube and have that exact model delivered to their door by
+            Tuesday. This shift has created a massive opportunity, but it&apos;s
+            also made the musical instrument industry one of the most
+            competitive digital landscapes out there. To survive, brands
+            can&apos;t just &quot;post on social media&quot; — they have to
+            build a digital ecosystem that feels as authentic as a live
+            performance.
+          </p>
+
+          <h2 className="font-serif text-2xl font-bold text-brown-dark mt-10 mb-3">
+            Understanding the Musical Instruments Industry
+          </h2>
+          <p>
+            To market effectively in this space, you first have to understand
+            that this isn&apos;t &quot;retail&quot; in the traditional sense.
+            When someone buys a guitar, they aren&apos;t just buying wood and
+            wire; they&apos;re buying a piece of their identity.
+          </p>
+          <p>
+            The industry is uniquely bifurcated. On one end, you have the
+            entry-level market: parents buying a first violin for a third-grader
+            or a college student looking for a cheap MIDI controller. These
+            customers are driven by price, durability, and &quot;ease of
+            start.&quot; On the other end, you have the pro/enthusiast market.
+            These are the &quot;gear-heads.&quot; They know the difference
+            between nitrocellulose and polyurethane finishes. They care about
+            the weight of the magnets in their pickups.
+          </p>
+          <p>
+            For a business, this means your digital presence has to speak two
+            languages at once. You need to be welcoming enough for the beginner
+            who is intimidated by music theory, but technically proficient
+            enough to satisfy the veteran who has been playing for thirty years.
+            If your content feels &quot;corporate&quot; or uninformed, the
+            community — which prizes authenticity above all else — will sniff it
+            out in seconds.
+          </p>
+
+          <h2 className="font-serif text-2xl font-bold text-brown-dark mt-10 mb-3">
+            Why is Digital Marketing Important in This Industry?
+          </h2>
+          <p>
+            If you aren&apos;t online, you&apos;re basically a ghost. That might
+            sound harsh, but in an industry where the customer journey involves
+            an average of 10 to 15 different &quot;touchpoints&quot; before a
+            purchase, digital visibility is the only way to stay in the game.
+          </p>
+          <ol className="list-decimal list-inside space-y-3 pl-2">
+            <li>
+              <strong>The Death of the &quot;Blind Buy&quot;:</strong> Almost
+              nobody walks into a store and buys a ₹20,000 keyboard without
+              looking it up first. They&apos;ve already watched ten
+              &quot;unboxing&quot; videos and read three forum threads on
+              Reddit. Digital marketing allows you to be the one providing that
+              information.
+            </li>
+            <li>
+              <strong>Global Reach for Niche Products:</strong> If you make
+              boutique, hand-hammered cymbals, your local market might be five
+              people. Through digital marketing, your market is every drummer on
+              the planet.
+            </li>
+            <li>
+              <strong>The Power of Sound:</strong> Traditional print ads could
+              show you a picture of a flute, but digital marketing lets you hear
+              it. Through high-fidelity audio and video, you can bridge the
+              sensory gap that used to be the biggest barrier to online sales.
+            </li>
+            <li>
+              <strong>Community Building:</strong> Musicians love to talk about
+              gear. Digital platforms provide a space for a brand to stop being
+              a &quot;seller&quot; and start being a &quot;facilitator&quot; of
+              a global conversation.
+            </li>
+          </ol>
+
+          <h2 className="font-serif text-2xl font-bold text-brown-dark mt-10 mb-3">
+            Smart Digital Marketing Techniques for Musical Instrument Businesses
+          </h2>
+          <p>
+            Success in this niche requires moving beyond &quot;Buy Now&quot;
+            buttons. You have to provide value before you ever ask for a credit
+            card number.
+          </p>
+
+          <h3 className="font-serif text-xl font-semibold text-brown-dark mt-8 mb-2">
+            The &quot;Value-First&quot; Content Strategy
+          </h3>
+          <p>
+            Instead of just listing the specs of a drum kit, create a video
+            titled &quot;5 Ways to Make a Cheap Snare Drum Sound Like a
+            Professional One.&quot; This positions your brand as an expert and a
+            helper. When that drummer eventually decides they do want a
+            professional snare, guess whose website they&apos;re going to visit
+            first?
+          </p>
+
+          <h3 className="font-serif text-xl font-semibold text-brown-dark mt-8 mb-2">
+            Leveraging the &quot;Influencer&quot; Micro-Community
+          </h3>
+          <p>
+            In the music world, a &quot;micro-influencer&quot; (like a local
+            guitar teacher with 5,000 loyal YouTube subscribers) is often more
+            valuable than a pop star with 5 million. Why? Because people trust
+            their ears. Partnering with respected players for honest,
+            &quot;no-BS&quot; reviews creates a level of social proof that money
+            can&apos;t buy.
+          </p>
+
+          <h3 className="font-serif text-xl font-semibold text-brown-dark mt-8 mb-2">
+            Search Engine Optimization (SEO) for &quot;Solution-Seeking&quot;
+            Keywords
+          </h3>
+          <p>
+            Most musicians search for solutions, not just products. Smart brands
+            optimize for long-tail keywords like &quot;how to fix fret
+            buzz&quot; or &quot;best travel guitars for backpacking.&quot; By
+            appearing in these search results, you capture the user at the
+            moment of need.
+          </p>
+
+          <h3 className="font-serif text-xl font-semibold text-brown-dark mt-8 mb-2">
+            Interactive Gear Builders
+          </h3>
+          <p>
+            One of the smartest moves for modern music sites is the &quot;Custom
+            Shop&quot; tool. Letting a user digitally &quot;build&quot; their
+            dream guitar by choosing the wood, the hardware, and the color
+            literally creates an emotional investment. Even if they don&apos;t
+            buy it today, they&apos;ve spent twenty minutes engaging with your
+            brand, and they&apos;ve likely saved a picture of that &quot;dream
+            build&quot; to their phone.
+          </p>
+
+          <h2 className="font-serif text-2xl font-bold text-brown-dark mt-10 mb-3">
+            Challenges of Digital Marketing for the Musical Instrument Industry
+          </h2>
+          <p>
+            It isn&apos;t all standing ovations. There are specific,
+            &quot;sticky&quot; problems that music retailers face online.
+          </p>
+
+          <h3 className="font-serif text-xl font-semibold text-brown-dark mt-8 mb-2">
+            The &quot;Touch and Feel&quot; Barrier
+          </h3>
+          <p>
+            How do you describe the &quot;neck profile&quot; of a bass through a
+            screen? How do you explain the &quot;resistance&quot; of a
+            trumpet&apos;s valves? This is the biggest hurdle. Digital marketing
+            has to work twice as hard to translate physical sensations into
+            visual and auditory cues.
+          </p>
+
+          <h3 className="font-serif text-xl font-semibold text-brown-dark mt-8 mb-2">
+            The &quot;Showrooming&quot; Problem
+          </h3>
+          <p>
+            A classic challenge: a customer goes to a local shop to try out a
+            guitar for an hour, gets the feel for it, and then goes home and
+            buys it from a giant online retailer because it&apos;s ₹1000
+            cheaper. To fight this, digital marketing needs to emphasize added
+            value — things like extended warranties, free setups, or exclusive
+            &quot;how-to&quot; content that only comes with a purchase from your
+            specific store.
+          </p>
+
+          <h3 className="font-serif text-xl font-semibold text-brown-dark mt-8 mb-2">
+            Hyper-Critical Audiences
+          </h3>
+          <p>
+            Musicians can be, well... picky. If you post a video of a guitar and
+            the player is slightly out of tune, the comments section will let
+            you know within minutes. The margin for error in content production
+            is much smaller here than in other industries. Your marketing team
+            needs to actually know music.
+          </p>
+
+          <h2 className="font-serif text-2xl font-bold text-brown-dark mt-10 mb-3">
+            Conclusion
+          </h2>
+          <p>
+            The musical instrument industry is at a fascinating crossroads. We
+            have centuries-old traditions like the hand-carving of a violin
+            meeting 21st-century algorithms. But at the core of it all, the
+            mission hasn&apos;t changed. People want to make something
+            beautiful.
+          </p>
+          <p>
+            Digital marketing, when done right, isn&apos;t about
+            &quot;tricking&quot; someone into a sale. It&apos;s about education,
+            inspiration, and connection. It&apos;s about making sure that when a
+            person decides they are ready to start their musical journey, they
+            find the right tool to do it. The brands that win in this space will
+            be the ones that stop acting like &quot;sellers&quot; and start
+            acting like the &quot;smart friend&quot; at the music shop who
+            always knows exactly what gear you need.
+          </p>
+        </div>
+      </motion.div>
     </main>
   );
 }
@@ -1092,7 +1227,7 @@ function BlogPostPage() {
       </div>
       <img
         src={post.image}
-        alt={post.title}
+        alt={`${post.title} - SoundSpace blog article`}
         className="w-full rounded-lg border border-brown-light mb-8 object-cover max-h-80"
       />
       <div className="prose-sm max-w-none">
@@ -1270,7 +1405,8 @@ function ContactPage() {
                 {
                   icon: MapPin,
                   label: "Address",
-                  value: "123 Music Street, Bandra West, Mumbai - 400050",
+                  value:
+                    "Bennett University, Greater Noida, Uttar Pradesh - 201310",
                 },
                 { icon: Clock, label: "Hours", value: "Mon-Sat: 10AM - 8PM" },
               ].map((item) => (
@@ -1354,7 +1490,7 @@ function CartPage() {
             >
               <img
                 src={item.image}
-                alt={item.name}
+                alt={`${item.name} in shopping cart`}
                 className="w-20 h-20 object-cover rounded-md border border-brown-light shrink-0"
               />
               <div className="flex-1 min-w-0">
