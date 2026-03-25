@@ -8,6 +8,9 @@ export interface Product {
   amazonUrl: string;
   image: string;
   category: string;
+  imageRedirectUrl?: string;
+  instrumentType?: string;
+  specifications?: string;
 }
 
 export const products: Product[] = [
@@ -21,9 +24,13 @@ export const products: Product[] = [
     altText: "Yamaha F310 best beginner acoustic guitar India",
     amazonUrl:
       "https://www.amazon.in/Yamaha-F310-Acoustic-Guitar-Strings/dp/B07V5J7V1Q",
-    image:
-      "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=600&q=80",
+    image: "/assets/generated/yamaha-f310-acoustic-guitar.dim_800x600.jpg",
     category: "Guitar",
+    imageRedirectUrl:
+      "https://www.amazon.in/Yamaha-F310-Acoustic-Guitar-Strings/dp/B07V5J7V1Q",
+    instrumentType: "Acoustic",
+    specifications:
+      "Top: Spruce\nBack & Sides: Meranti\nNeck: Nato\nFingerboard: Rosewood\nScale Length: 634mm\nNut Width: 43mm\nTuning Machines: Die-cast chrome\nStrings: Yamaha strings included",
   },
   {
     id: 2,
@@ -35,8 +42,12 @@ export const products: Product[] = [
     altText: "Squier Fender Stratocaster electric guitar for beginners India",
     amazonUrl: "https://www.amazon.in/s?k=Squier+Fender+Stratocaster",
     image:
-      "https://images.unsplash.com/photo-1525201548942-d8732f6617a0?w=600&q=80",
+      "/assets/generated/squier-stratocaster-electric-guitar.dim_800x600.jpg",
     category: "Guitar",
+    imageRedirectUrl: "https://www.amazon.in/s?k=Squier+Fender+Stratocaster",
+    instrumentType: "Electric",
+    specifications:
+      "Body: Poplar\nNeck: Maple, C-shape\nFingerboard: Indian Laurel\nFrets: 21 medium jumbo\nPickups: 3x Single-coil\nBridge: 6-saddle vintage-style\nControls: 1V, 2T, 5-way switch",
   },
   {
     id: 3,
@@ -47,9 +58,12 @@ export const products: Product[] = [
       "88 weighted keys with authentic piano sound, perfect for beginners in India.",
     altText: "Casio CDP-S160 digital piano beginner keyboard India best price",
     amazonUrl: "https://www.amazon.in/s?k=Casio+CDP-S160+Digital+Piano",
-    image:
-      "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=600&q=80",
+    image: "/assets/generated/casio-cdp-s160-digital-piano.dim_800x600.jpg",
     category: "Piano",
+    imageRedirectUrl: "https://www.amazon.in/s?k=Casio+CDP-S160+Digital+Piano",
+    instrumentType: "Digital",
+    specifications:
+      "Keys: 88 Scaled Hammer Action\nPolyphony: 64 notes\nTones: 10 built-in\nSpeakers: 2x 8W\nConnectivity: USB, Headphone jack\nDimensions: 1322 x 232 x 76mm\nWeight: 10.5kg",
   },
   {
     id: 4,
@@ -60,9 +74,12 @@ export const products: Product[] = [
       "Complete drum kit for beginners with professional sound quality.",
     altText: "Pearl Export drum kit beginner drums India buy online",
     amazonUrl: "https://www.amazon.in/s?k=Pearl+Export+Drum+Kit",
-    image:
-      "https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?w=600&q=80",
+    image: "/assets/generated/pearl-export-drum-kit.dim_800x600.jpg",
     category: "Drums",
+    imageRedirectUrl: "https://www.amazon.in/s?k=Pearl+Export+Drum+Kit",
+    instrumentType: "Acoustic Kit",
+    specifications:
+      'Bass Drum: 22" x 18"\nSnare: 14" x 5.5"\nTom: 10" x 7" & 12" x 8"\nFloor Tom: 16" x 16"\nShell: Poplar/Mahogany\nHardware: 830 Series included\nCymbals: Not included',
   },
   {
     id: 5,
@@ -73,9 +90,12 @@ export const products: Product[] = [
       "Student saxophone with excellent intonation and easy playability.",
     altText: "Yamaha YAS-280 alto saxophone student beginner India",
     amazonUrl: "https://www.amazon.in/s?k=Yamaha+YAS-280+Alto+Saxophone",
-    image:
-      "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=600&q=80",
+    image: "/assets/generated/yamaha-yas-280-saxophone.dim_800x600.jpg",
     category: "Wind",
+    imageRedirectUrl: "https://www.amazon.in/s?k=Yamaha+YAS-280+Alto+Saxophone",
+    instrumentType: "Student",
+    specifications:
+      "Key: Eb Alto\nBody: Yellow brass\nFinish: Gold lacquer\nMouthpiece: Yamaha 4C included\nLigature: Metal\nCase: Included\nRange: Bb3 - F#6",
   },
   {
     id: 6,
@@ -85,9 +105,13 @@ export const products: Product[] = [
     description: "Electronic drum kit with mesh heads for quiet practice.",
     altText: "Roland TD-1DMK electronic drum kit mesh heads India buy",
     amazonUrl: "https://www.amazon.in/s?k=Roland+TD-1DMK+Electronic+Drums",
-    image:
-      "https://images.unsplash.com/photo-1573871669414-010dbf73ca84?w=600&q=80",
+    image: "/assets/generated/roland-td1dmk-electronic-drums.dim_800x600.jpg",
     category: "Drums",
+    imageRedirectUrl:
+      "https://www.amazon.in/s?k=Roland+TD-1DMK+Electronic+Drums",
+    instrumentType: "Electronic Kit",
+    specifications:
+      "Pads: Mesh snare + rubber toms\nCymbals: 3-zone ride, 2-zone hi-hat\nModule: TD-1DMK\nKick: KT-9 kick trigger\nSounds: 15 built-in drum kits\nConnectivity: USB, AUX in/out",
   },
   {
     id: 7,
@@ -98,9 +122,13 @@ export const products: Product[] = [
       "Stunning quilted art grain top with powerful humbuckers — a top pick for beginner electric guitarists in India.",
     altText: "Ibanez GRX70QA electric guitar beginner India buy online",
     amazonUrl: "https://www.amazon.in/s?k=Ibanez+GRX70QA+Electric+Guitar",
-    image:
-      "https://images.unsplash.com/photo-1605020420620-20c943cc4669?w=600&q=80",
+    image: "/assets/generated/ibanez-grx70qa-electric-guitar.dim_800x600.jpg",
     category: "Guitar",
+    imageRedirectUrl:
+      "https://www.amazon.in/s?k=Ibanez+GRX70QA+Electric+Guitar",
+    instrumentType: "Electric",
+    specifications:
+      "Body: Poplar\nTop: Quilted Art Grain\nNeck: Maple\nFingerboard: Purpleheart\nFrets: 24 jumbo\nPickups: 2x Infinity R humbuckers\nBridge: GRX tremolo",
   },
   {
     id: 8,
@@ -111,9 +139,12 @@ export const products: Product[] = [
       "61 keys, 48 built-in songs, and a slim design — the most affordable keyboard for beginners in India.",
     altText: "Casio CT-S300 portable keyboard beginner piano India affordable",
     amazonUrl: "https://www.amazon.in/s?k=Casio+CT-S300+Keyboard",
-    image:
-      "https://images.unsplash.com/photo-1551076805-e1869033e561?w=600&q=80",
+    image: "/assets/generated/casio-ct-s300-keyboard.dim_800x600.jpg",
     category: "Piano",
+    imageRedirectUrl: "https://www.amazon.in/s?k=Casio+CT-S300+Keyboard",
+    instrumentType: "Portable",
+    specifications:
+      "Keys: 61 standard\nTones: 61 built-in\nRhythms: 60 built-in\nSongs: 48 built-in\nPolyphony: 8 notes\nPower: 6 AA batteries or AC adapter\nWeight: 1.6kg",
   },
   {
     id: 9,
@@ -124,9 +155,12 @@ export const products: Product[] = [
       "Traditional Indian sitar crafted for students — ideal for beginners exploring classical Hindustani music.",
     altText: "Banjira student sitar Indian classical instrument beginner India",
     amazonUrl: "https://www.amazon.in/s?k=student+sitar+beginner",
-    image:
-      "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&q=80",
+    image: "/assets/generated/banjira-student-sitar.dim_800x600.jpg",
     category: "Indian Classical",
+    imageRedirectUrl: "https://www.amazon.in/s?k=student+sitar+beginner",
+    instrumentType: "Student",
+    specifications:
+      "Body: Teak/fiberglass\nStrings: 7 main + 13 sympathetic\nFrets: 20 movable brass\nTuning pegs: Bone\nGourd: Teak base\nFinish: Natural lacquer\nCase: Padded gig bag included",
   },
   {
     id: 10,
@@ -137,9 +171,12 @@ export const products: Product[] = [
       "Lightweight djembe with warm tones — a great first hand percussion instrument for beginners and kids.",
     altText: "Toca Freestyle djembe hand drum beginner percussion India",
     amazonUrl: "https://www.amazon.in/s?k=djembe+drum+beginner",
-    image:
-      "https://images.unsplash.com/photo-1516924962500-2b4b3b99ea02?w=600&q=80",
+    image: "/assets/generated/toca-freestyle-djembe.dim_800x600.jpg",
     category: "Percussion",
+    imageRedirectUrl: "https://www.amazon.in/s?k=djembe+drum+beginner",
+    instrumentType: "Hand Drum",
+    specifications:
+      'Head: 10" synthetic\nShell: Lightweight composite\nHeight: 24"\nRope tension system\nWeight: 2.5kg\nSuitable for ages 8+',
   },
   {
     id: 11,
@@ -150,9 +187,12 @@ export const products: Product[] = [
       "Silver-plated student flute with excellent response — trusted by music schools and beginners across India.",
     altText: "Yamaha YFL-222 student flute beginner wind instrument India",
     amazonUrl: "https://www.amazon.in/s?k=Yamaha+YFL-222+Flute",
-    image:
-      "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=600&q=80",
+    image: "/assets/generated/yamaha-yfl-222-flute.dim_800x600.jpg",
     category: "Wind",
+    imageRedirectUrl: "https://www.amazon.in/s?k=Yamaha+YFL-222+Flute",
+    instrumentType: "Student",
+    specifications:
+      "Key: C\nBody: Silver-plated\nHeadJoint: Silver-plated\nMechanism: Offset G\nCut: Standard\nRange: C4 - D7\nCase: Hard case included",
   },
   {
     id: 12,
@@ -164,8 +204,11 @@ export const products: Product[] = [
     altText:
       "Remo Fiberskyn tabla set Indian classical beginner percussion India",
     amazonUrl: "https://www.amazon.in/s?k=tabla+set+beginner",
-    image:
-      "https://images.unsplash.com/photo-1461784121038-f088ca1e7714?w=600&q=80",
+    image: "/assets/generated/remo-fiberskyn-tabla.dim_800x600.jpg",
     category: "Indian Classical",
+    imageRedirectUrl: "https://www.amazon.in/s?k=tabla+set+beginner",
+    instrumentType: "Percussion",
+    specifications:
+      'Heads: Fiberskyn synthetic\nDayan diameter: 5.5"\nBayan diameter: 8"\nShell: Wood\nTuning: Strap and hammer\nIncludes: Hammer and cushion rings',
   },
 ];
